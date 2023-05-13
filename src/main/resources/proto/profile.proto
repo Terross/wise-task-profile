@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package ru.leti.wise.task.profile;
+
+enum Role {
+  STUDENT = 0;
+  TEACHER = 1;
+  CAPTAIN = 2;
+  ADMIN = 3;
+}
+
+message Profile {
+  string id = 1;
+  string email = 2;
+  string profilePassword = 3;
+  string firstName = 4;
+  string lastName = 5;
+  string patronymic = 6;
+  Role profileRole = 7;
+  string studentGroup = 8;
+  int32 studentCourse = 9;
+}
