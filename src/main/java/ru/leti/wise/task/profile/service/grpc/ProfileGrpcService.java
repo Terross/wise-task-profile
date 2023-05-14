@@ -5,12 +5,7 @@ import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.lognet.springboot.grpc.GRpcService;
-import ru.leti.wise.task.profile.ProfileGrpc;
-import ru.leti.wise.task.profile.ProfileGrpc.SignInRequest;
-import ru.leti.wise.task.profile.ProfileGrpc.SignInResponse;
-import ru.leti.wise.task.profile.ProfileGrpc.SignUpResponse;
-import ru.leti.wise.task.profile.ProfileGrpc.SignUpRequest;
-import ru.leti.wise.task.profile.ProfileGrpc.GetAllProfilesResponse;
+import ru.leti.wise.task.profile.ProfileGrpc.*;
 import ru.leti.wise.task.profile.ProfileServiceGrpc.ProfileServiceImplBase;
 import ru.leti.wise.task.profile.logic.GetAllProfilesOperation;
 import ru.leti.wise.task.profile.logic.SignInOperation;
@@ -39,6 +34,7 @@ public class ProfileGrpcService extends ProfileServiceImplBase {
 
     @Override
     public void getAllProfiles(Empty request, StreamObserver<GetAllProfilesResponse> responseObserver) {
-        super.getAllProfiles(request, responseObserver);
+        responseObserver.onNext(getAllProfilesOperation.activate());
+        responseObserver.onCompleted();
     }
 }
