@@ -21,6 +21,26 @@ public class ProfileGrpcService extends ProfileServiceImplBase {
     private final GetAllProfilesOperation getAllProfilesOperation;
 
     @Override
+    public void getProfile(GetProfileRequest request, StreamObserver<GetProfileResponse> responseObserver) {
+        super.getProfile(request, responseObserver);
+    }
+
+    @Override
+    public void deleteProfile(DeleteProfileRequest request, StreamObserver<Empty> responseObserver) {
+        super.deleteProfile(request, responseObserver);
+    }
+
+    @Override
+    public void updateProfile(UpdateProfileResponse request, StreamObserver<UpdateProfileResponse> responseObserver) {
+        super.updateProfile(request, responseObserver);
+    }
+
+    @Override
+    public void getProfileStatistic(GetProfileStatisticRequest request, StreamObserver<GetProfileStatisticResponse> responseObserver) {
+        super.getProfileStatistic(request, responseObserver);
+    }
+
+    @Override
     public void signUp(SignUpRequest request, StreamObserver<SignUpResponse> responseObserver) {
         responseObserver.onNext(signUpOperation.activate(request));
         responseObserver.onCompleted();

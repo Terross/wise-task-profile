@@ -7,7 +7,15 @@ CREATE TABLE wise_task_profile.profile  (
     first_name          VARCHAR     NOT NULL,
     last_name           VARCHAR     NOT NULL,
     patronymic          VARCHAR,
-    profile_role        VARCHAR     NOT NULL,
-    student_group       VARCHAR,
-    student_course      INT
+    profile_role        VARCHAR     NOT NULL
+
+);
+
+CREATE TABLE wise_task_profile.student (
+    id                  UUID            NOT NULL PRIMARY KEY,
+    student_group       VARCHAR         NOT NULL,
+    student_course      INT             NOT NULL,
+    profile_id          UUID            NOT NULL,
+
+    CONSTRAINT profile_fk FOREIGN KEY (profile_id) REFERENCES wise_task_profile.profile(id)
 );

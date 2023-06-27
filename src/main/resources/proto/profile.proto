@@ -12,11 +12,17 @@ enum Role {
 message Profile {
   string id = 1;
   string email = 2;
-  string profilePassword = 3;
-  string firstName = 4;
-  string lastName = 5;
+  string profile_password = 3;
+  string first_name = 4;
+  string last_name = 5;
   string patronymic = 6;
-  Role profileRole = 7;
-  string studentGroup = 8;
-  int32 studentCourse = 9;
+  Role profile_role = 7;
+  string student_group = 8;
+  int32 student_course = 9;
+}
+
+message ProfileStatistic {
+  int32 task_count = 1;
+  int32 correctly_solved_number = 2;
+  int32 wrong_solved_number = 3;
 }

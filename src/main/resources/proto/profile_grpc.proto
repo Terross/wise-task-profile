@@ -10,6 +10,38 @@ service ProfileService {
   rpc SignUp(SignUpRequest) returns (SignUpResponse);
   rpc SignIn(SignInRequest) returns (SignInResponse);
   rpc GetAllProfiles(google.protobuf.Empty) returns (GetAllProfilesResponse);
+  rpc GetProfile(GetProfileRequest) returns (GetProfileResponse);
+  rpc DeleteProfile(DeleteProfileRequest) returns (google.protobuf.Empty);
+  rpc UpdateProfile(UpdateProfileResponse) returns (UpdateProfileResponse);
+  rpc GetProfileStatistic(GetProfileStatisticRequest) returns (GetProfileStatisticResponse);
+}
+
+message GetProfileRequest {
+  string profile_id = 1;
+}
+
+message GetProfileResponse {
+  Profile profile = 1;
+}
+
+message DeleteProfileRequest {
+  string profile_id = 1;
+}
+
+message UpdateProfileRequest {
+  Profile profile = 1;
+}
+
+message UpdateProfileResponse {
+  Profile profile = 1;
+}
+
+message GetProfileStatisticRequest {
+  string profile_id = 1;
+}
+
+message GetProfileStatisticResponse {
+  ProfileStatistic profileStatistic = 1;
 }
 
 message SignUpRequest {
@@ -17,7 +49,7 @@ message SignUpRequest {
 }
 
 message SignUpResponse {
-  string JWT = 1;
+  string token = 1;
 }
 
 message SignInRequest {
@@ -26,7 +58,7 @@ message SignInRequest {
 }
 
 message SignInResponse {
-  string JWT = 1;
+  string token = 1;
 }
 
 message GetAllProfilesResponse {

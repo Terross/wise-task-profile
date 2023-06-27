@@ -21,7 +21,7 @@ public class SignUpOperation {
         ProfileEntity profile = profileMapper.toProfileEntity(signUpRequest.getProfile());
         profileRepository.save(profile);
         return SignUpResponse.newBuilder()
-                .setJWT(jwtHelper.generateToken(profile))
+                .setToken(jwtHelper.generateToken(profile))
                 .build();
     }
 }

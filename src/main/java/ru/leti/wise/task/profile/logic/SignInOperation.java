@@ -27,7 +27,7 @@ public class SignInOperation {
         }
 
         return SignInResponse.newBuilder()
-                .setJWT(jwtHelper.generateToken(profile))
+                .setToken(jwtHelper.generateToken(profile))
                 .build();
     }
 }
