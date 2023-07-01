@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.leti.wise.task.profile.ProfileGrpc.UpdateProfileResponse;
 import ru.leti.wise.task.profile.ProfileOuterClass.Profile;
+import ru.leti.wise.task.profile.error.ProfileNotFoundException;
 import ru.leti.wise.task.profile.mapper.ProfileMapper;
 import ru.leti.wise.task.profile.repository.ProfileRepository;
 
@@ -20,7 +21,7 @@ public class UpdateProfileOperation {
         var profileEntity = profileMapper.toProfileEntity(profile);
         int updatedRow = profileRepository.updateProfileBy(profileEntity);
         if (updatedRow < 1) {
-            throw new RuntimeException("Profile not found");
+            throw new ProfileNotFoundException();
         }
 
         return UpdateProfileResponse.newBuilder()

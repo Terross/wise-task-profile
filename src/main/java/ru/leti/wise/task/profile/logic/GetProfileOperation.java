@@ -3,6 +3,7 @@ package ru.leti.wise.task.profile.logic;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.leti.wise.task.profile.ProfileGrpc.GetProfileResponse;
+import ru.leti.wise.task.profile.error.ProfileNotFoundException;
 import ru.leti.wise.task.profile.mapper.ProfileMapper;
 import ru.leti.wise.task.profile.repository.ProfileRepository;
 
@@ -17,7 +18,7 @@ public class GetProfileOperation {
 
     public GetProfileResponse activate(UUID id) {
         var profile = profileRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Profile with id = %s not found".formatted(id)));
+                .orElseThrow(() -> new ProfileNotFoundException());
 
         return GetProfileResponse.newBuilder()
                 .setProfile(profileMapper.toProfile(profile))

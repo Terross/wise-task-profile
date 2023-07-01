@@ -1,12 +1,17 @@
 package ru.leti.wise.task.profile.service.grpc;
 
 import com.google.protobuf.Empty;
+import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.lognet.springboot.grpc.GRpcService;
+import org.lognet.springboot.grpc.recovery.GRpcExceptionHandler;
+import org.lognet.springboot.grpc.recovery.GRpcExceptionScope;
+import org.lognet.springboot.grpc.recovery.GRpcServiceAdvice;
 import ru.leti.wise.task.profile.ProfileGrpc.*;
 import ru.leti.wise.task.profile.ProfileServiceGrpc.ProfileServiceImplBase;
+import ru.leti.wise.task.profile.error.ProfileNotFoundException;
 import ru.leti.wise.task.profile.logic.*;
 
 import java.util.UUID;
@@ -63,5 +68,13 @@ public class ProfileGrpcService extends ProfileServiceImplBase {
     public void getAllProfiles(Empty request, StreamObserver<GetAllProfilesResponse> responseObserver) {
         responseObserver.onNext(getAllProfilesOperation.activate());
         responseObserver.onCompleted();
+    }
+
+    @GRpcServiceAdvice
+    static class ErrorHandler {
+        @GRpcExceptionHandler
+        public Status handleProfileNotFoundException(ProfileNotFoundException e, GRpcExceptionScope scope) {
+            return Status.NOT_FOUND;
+        }
     }
 }
