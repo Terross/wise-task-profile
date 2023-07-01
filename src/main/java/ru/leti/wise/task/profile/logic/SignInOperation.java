@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.leti.wise.task.profile.ProfileGrpc.SignInResponse;
 import ru.leti.wise.task.profile.ProfileGrpc.SignInRequest;
-import ru.leti.wise.task.profile.mapper.ProfileMapper;
 import ru.leti.wise.task.profile.model.ProfileEntity;
 import ru.leti.wise.task.profile.repository.ProfileRepository;
 import ru.leti.wise.task.profile.service.JWTHelper;

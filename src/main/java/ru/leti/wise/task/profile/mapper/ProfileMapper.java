@@ -1,6 +1,7 @@
 package ru.leti.wise.task.profile.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 import ru.leti.wise.task.profile.ProfileOuterClass;
 import ru.leti.wise.task.profile.ProfileOuterClass.Profile;
@@ -13,6 +14,7 @@ import java.util.List;
 public interface ProfileMapper {
 
 
+    @Mapping(target = "profilePassword", ignore = true)
     Profile toProfile(ProfileEntity profile);
     ProfileEntity toProfileEntity(Profile profile);
 
