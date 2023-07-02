@@ -11,13 +11,15 @@ import org.lognet.springboot.grpc.recovery.GRpcExceptionScope;
 import org.lognet.springboot.grpc.recovery.GRpcServiceAdvice;
 import ru.leti.wise.task.profile.ProfileGrpc.*;
 import ru.leti.wise.task.profile.ProfileServiceGrpc.ProfileServiceImplBase;
-import ru.leti.wise.task.profile.error.ProfileNotFoundException;
+import ru.leti.wise.task.profile.error.BusinessException;
+import ru.leti.wise.task.profile.error.GrpcErrorHandler;
+import ru.leti.wise.task.profile.helper.LogInterceptor;
 import ru.leti.wise.task.profile.logic.*;
 
 import java.util.UUID;
 
 @Slf4j
-@GRpcService
+@GRpcService(interceptors = { LogInterceptor.class })
 @RequiredArgsConstructor
 public class ProfileGrpcService extends ProfileServiceImplBase {
 
@@ -71,10 +73,13 @@ public class ProfileGrpcService extends ProfileServiceImplBase {
     }
 
     @GRpcServiceAdvice
+    @RequiredArgsConstructor
     static class ErrorHandler {
+        private final GrpcErrorHandler grpcErrorHandler;
+
         @GRpcExceptionHandler
-        public Status handleProfileNotFoundException(ProfileNotFoundException e, GRpcExceptionScope scope) {
-            return Status.NOT_FOUND;
+        public Status handleBusinessException(BusinessException e, GRpcExceptionScope scope) {
+            return grpcErrorHandler.processError(e);
         }
     }
 }
