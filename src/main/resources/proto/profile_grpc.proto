@@ -12,7 +12,7 @@ service ProfileService {
   rpc GetAllProfiles(google.protobuf.Empty) returns (GetAllProfilesResponse);
   rpc GetProfile(GetProfileRequest) returns (GetProfileResponse);
   rpc DeleteProfile(DeleteProfileRequest) returns (google.protobuf.Empty);
-  rpc UpdateProfile(UpdateProfileResponse) returns (UpdateProfileResponse);
+  rpc UpdateProfile(UpdateProfileRequest) returns (UpdateProfileResponse);
   rpc GetProfileStatistic(GetProfileStatisticRequest) returns (GetProfileStatisticResponse);
 }
 

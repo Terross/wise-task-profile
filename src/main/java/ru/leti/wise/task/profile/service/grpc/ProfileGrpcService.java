@@ -44,7 +44,7 @@ public class ProfileGrpcService extends ProfileServiceImplBase {
     }
 
     @Override
-    public void updateProfile(UpdateProfileResponse request, StreamObserver<UpdateProfileResponse> responseObserver) {
+    public void updateProfile(UpdateProfileRequest request, StreamObserver<UpdateProfileResponse> responseObserver) {
         responseObserver.onNext(updateProfileOperation.activate(request.getProfile()));
         responseObserver.onCompleted();
     }
