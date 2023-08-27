@@ -2,7 +2,7 @@ spring:
   application:
     name: wise-task-profile
   datasource:
-    url: jdbc:postgresql://localhost:5432/wise_task_profile
+    url: jdbc:postgresql://wise-task-db:5432/wise_task_profile
     username: wise_task_profile
     password: wise_task_profile
     driver-class-name: org.postgresql.Driver

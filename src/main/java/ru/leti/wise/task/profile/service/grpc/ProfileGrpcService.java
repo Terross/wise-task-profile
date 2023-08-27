@@ -3,6 +3,7 @@ package ru.leti.wise.task.profile.service.grpc;
 import com.google.protobuf.Empty;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
+import io.micrometer.observation.annotation.Observed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.lognet.springboot.grpc.GRpcService;
@@ -19,6 +20,7 @@ import ru.leti.wise.task.profile.logic.*;
 import java.util.UUID;
 
 @Slf4j
+@Observed
 @GRpcService(interceptors = { LogInterceptor.class })
 @RequiredArgsConstructor
 public class ProfileGrpcService extends ProfileServiceImplBase {
