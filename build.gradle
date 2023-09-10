@@ -47,8 +47,8 @@ dependencies {
     implementation 'org.mapstruct:mapstruct:1.5.3.Final'
 
     // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
-    implementation 'io.jsonwebtoken:jjwt:0.2'
     implementation 'javax.xml.bind:jaxb-api:2.1'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
     //observability
     implementation 'io.micrometer:micrometer-tracing-bridge-brave'

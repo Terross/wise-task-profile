@@ -13,9 +13,6 @@ spring:
       hibernate:
         format_sql: true
 
-security:
-  secret: secret
-
 grpc:
   port: 6567
 server:
