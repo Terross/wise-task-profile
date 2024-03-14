@@ -19,8 +19,9 @@ public class UpdateProfileOperation {
 
     public UpdateProfileResponse activate(Profile profile) {
         var profileEntity = profileMapper.toProfileEntity(profile);
-        profileRepository.findById(profileEntity.getId())
+        var oldProfile = profileRepository.findById(profileEntity.getId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.PROFILE_NOT_FOUND));
+        profileEntity.setProfilePassword(oldProfile.getProfilePassword());
         profileRepository.save(profileEntity);
 
         return UpdateProfileResponse.newBuilder()

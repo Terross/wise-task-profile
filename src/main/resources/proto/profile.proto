@@ -18,7 +18,6 @@ message Profile {
   string patronymic = 6;
   Role profile_role = 7;
   string student_group = 8;
-  int32 student_course = 9;
 }
 
 message ProfileStatistic {

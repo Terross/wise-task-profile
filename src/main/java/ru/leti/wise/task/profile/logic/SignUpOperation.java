@@ -8,6 +8,8 @@ import ru.leti.wise.task.profile.mapper.ProfileMapper;
 import ru.leti.wise.task.profile.model.ProfileEntity;
 import ru.leti.wise.task.profile.repository.ProfileRepository;
 
+import java.util.UUID;
+
 @Component
 @RequiredArgsConstructor
 public class SignUpOperation {
@@ -17,6 +19,7 @@ public class SignUpOperation {
 
     public SignUpResponse activate(SignUpRequest signUpRequest) {
         ProfileEntity profile = profileMapper.toProfileEntity(signUpRequest.getProfile());
+        profile.setId(UUID.randomUUID());
         profileRepository.save(profile);
         return SignUpResponse.newBuilder()
                 .setProfile(profileMapper.toProfile(profile))

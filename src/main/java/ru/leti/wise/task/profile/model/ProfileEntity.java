@@ -31,9 +31,6 @@ public class ProfileEntity {
     @Column(name = "student_group")
     private String studentGroup;
 
-    @Column(name = "student_course")
-    private Integer studentCourse;
-
     @Enumerated(STRING)
     @Column(name = "profile_role")
     private Role profileRole;
