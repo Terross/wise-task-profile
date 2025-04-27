@@ -1,6 +1,7 @@
 package ru.leti.wise.task.profile.logic;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 import ru.leti.wise.task.profile.ProfileGrpc.SignInRequest;
 import ru.leti.wise.task.profile.ProfileGrpc.SignInResponse;
@@ -22,7 +23,7 @@ public class SignInOperation {
         ProfileEntity profile = profileRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new BusinessException(ErrorCode.PROFILE_NOT_FOUND));
 
-        if (!profile.getProfilePassword().equals(request.getPassword())) {
+        if (!BCrypt.checkpw(request.getPassword(),profile.getProfilePassword())) {
             throw new BusinessException(ErrorCode.INVALID_PASSWORD);
         }
 

@@ -21,12 +21,15 @@ import java.util.UUID;
 
 @Slf4j
 @Observed
-@GRpcService(interceptors = { LogInterceptor.class })
+@GRpcService(interceptors = {LogInterceptor.class})
 @RequiredArgsConstructor
 public class ProfileGrpcService extends ProfileServiceImplBase {
 
     private final SignUpOperation signUpOperation;
     private final SignInOperation signInOperation;
+    private final SendResetPasswordEmailOperation sendResetPasswordEmailOperation;
+    private final ResetPasswordOperation resetPasswordOperation;
+    private final ChangePasswordOperation changePasswordOperation;
     private final GetProfileOperation getProfileOperation;
     private final DeleteProfileOperation deleteProfileOperation;
     private final UpdateProfileOperation updateProfileOperation;
@@ -70,6 +73,26 @@ public class ProfileGrpcService extends ProfileServiceImplBase {
     }
 
     @Override
+    public void sendResetPasswordEmail(SendResetPasswordEmailRequest request, StreamObserver<Empty> responseObserver) {
+        sendResetPasswordEmailOperation.activate(request);
+        responseObserver.onNext(Empty.newBuilder().build());
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void resetPassword(ResetPasswordRequest request, StreamObserver<ResetPasswordResponse> responseObserver) {
+        responseObserver.onNext(resetPasswordOperation.activate(request));
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void changePassword(ChangePasswordRequest request, StreamObserver<Empty> responseObserver) {
+        changePasswordOperation.activate(request);
+        responseObserver.onNext(Empty.newBuilder().build());
+        responseObserver.onCompleted();
+    }
+
+    @Override
     public void getAllProfiles(Empty request, StreamObserver<GetAllProfilesResponse> responseObserver) {
         responseObserver.onNext(getAllProfilesOperation.activate());
         responseObserver.onCompleted();
@@ -80,6 +103,7 @@ public class ProfileGrpcService extends ProfileServiceImplBase {
         responseObserver.onNext(getProfileByEmailOperation.activate(request.getEmail()));
         responseObserver.onCompleted();
     }
+
 
     @GRpcServiceAdvice
     @RequiredArgsConstructor
