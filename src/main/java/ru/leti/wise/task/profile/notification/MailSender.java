@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MailSender {
 
-    private final String smtpHost = "smtp.wise task.ru" ;
+    private final String smtpHost = "smtp.wisetask.ru" ;
     private final int smtpPort = 25;
     private final String fromAddress = "noreply@wisetask.ru";
 
