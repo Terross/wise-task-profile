@@ -9,6 +9,9 @@ import "google/protobuf/empty.proto";
 service ProfileService {
   rpc SignUp(SignUpRequest) returns (SignUpResponse);
   rpc SignIn(SignInRequest) returns (SignInResponse);
+  rpc SendResetPasswordEmail(SendResetPasswordEmailRequest) returns (google.protobuf.Empty);
+  rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse);
+  rpc ChangePassword(ChangePasswordRequest) returns (google.protobuf.Empty);
   rpc GetAllProfiles(google.protobuf.Empty) returns (GetAllProfilesResponse);
   rpc GetProfile(GetProfileRequest) returns (GetProfileResponse);
   rpc GetProfileByEmail(GetProfileByEmailRequest) returns (GetProfileByEmailResponse);
@@ -67,6 +70,26 @@ message SignInRequest {
 }
 
 message SignInResponse {
+  Profile profile = 1;
+}
+
+message ChangePasswordRequest{
+  string profile_id = 1;
+  string oldPassword = 2;
+  string newPassword = 3;
+}
+
+message SendResetPasswordEmailRequest{
+  string email = 1;
+}
+
+message ResetPasswordRequest{
+  string recovery_token = 1;
+  string new_password = 2;
+}
+
+
+message ResetPasswordResponse{
   Profile profile = 1;
 }
 

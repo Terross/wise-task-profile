@@ -1,8 +1,6 @@
 package ru.leti.wise.task.profile.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.NullValueCheckStrategy;
+import org.mapstruct.*;
 import ru.leti.wise.task.profile.ProfileOuterClass;
 import ru.leti.wise.task.profile.ProfileOuterClass.Profile;
 import ru.leti.wise.task.profile.model.ProfileEntity;
@@ -13,9 +11,11 @@ import java.util.List;
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface ProfileMapper {
 
-
     @Mapping(target = "profilePassword", ignore = true)
     Profile toProfile(ProfileEntity profile);
+
+    @Mapping(target = "id",
+            conditionExpression = "java(profile.getId() != null && !profile.getId().isEmpty())", defaultExpression = "java(null)")
     ProfileEntity toProfileEntity(Profile profile);
 
     List<Profile> toProfiles(List<ProfileEntity> profiles);
