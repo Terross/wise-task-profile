@@ -10,7 +10,9 @@ import ru.leti.wise.task.profile.error.ErrorCode;
 import ru.leti.wise.task.profile.mapper.ProfileMapper;
 import ru.leti.wise.task.profile.model.ProfileEntity;
 import ru.leti.wise.task.profile.repository.ProfileRepository;
+import ru.leti.wise.task.profile.validation.ProfileValidator;
 
+import java.nio.file.attribute.UserPrincipal;
 import java.util.UUID;
 
 @Component
@@ -19,11 +21,13 @@ public class SignUpOperation {
 
     private final ProfileMapper profileMapper;
     private final ProfileRepository profileRepository;
+    private final ProfileValidator profileValidator;
 
     public SignUpResponse activate(SignUpRequest signUpRequest) {
-        if (!profileRepository.findByEmail(signUpRequest.getProfile().getEmail()).isEmpty()){
-            throw new BusinessException(ErrorCode.EMAIL_ALREADY_TAKEN);
-        }
+        var profileDto = signUpRequest.getProfile();
+        profileValidator.checkEmptyFields(profileDto);
+        profileValidator.checkUniqueEmail(profileDto);
+
         ProfileEntity profile = profileMapper.toProfileEntity(signUpRequest.getProfile());
         profile.setId(UUID.randomUUID());
         profile.setProfilePassword(BCrypt.hashpw(profile.getProfilePassword(), BCrypt.gensalt()));

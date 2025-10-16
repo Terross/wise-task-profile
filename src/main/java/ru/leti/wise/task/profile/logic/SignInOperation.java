@@ -10,20 +10,19 @@ import ru.leti.wise.task.profile.error.ErrorCode;
 import ru.leti.wise.task.profile.mapper.ProfileMapper;
 import ru.leti.wise.task.profile.model.ProfileEntity;
 import ru.leti.wise.task.profile.repository.ProfileRepository;
+import ru.leti.wise.task.profile.validation.ProfileValidator;
 
 @Component
 @RequiredArgsConstructor
 public class SignInOperation {
 
     private final ProfileMapper profileMapper;
-    private final ProfileRepository profileRepository;
-
+    private final ProfileValidator profileValidator;
     public SignInResponse activate(SignInRequest request) {
 
-        ProfileEntity profile = profileRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new BusinessException(ErrorCode.PROFILE_NOT_FOUND));
+        ProfileEntity profile = profileValidator.checkEmailExistence(request.getEmail());
 
-        if (!BCrypt.checkpw(request.getPassword(),profile.getProfilePassword())) {
+        if (request.getPassword().isBlank() || !BCrypt.checkpw(request.getPassword(),profile.getProfilePassword())) {
             throw new BusinessException(ErrorCode.INVALID_PASSWORD);
         }
 

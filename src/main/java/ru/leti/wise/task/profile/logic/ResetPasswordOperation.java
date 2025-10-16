@@ -12,6 +12,7 @@ import ru.leti.wise.task.profile.model.PasswordRecoveryEntity;
 import ru.leti.wise.task.profile.model.ProfileEntity;
 import ru.leti.wise.task.profile.repository.PasswordRecoveryRepository;
 import ru.leti.wise.task.profile.repository.ProfileRepository;
+import ru.leti.wise.task.profile.validation.ProfileValidator;
 
 import java.util.UUID;
 
@@ -22,14 +23,14 @@ public class ResetPasswordOperation {
     private final ProfileRepository profileRepository;
     private final ProfileMapper profileMapper;
     private final PasswordRecoveryRepository passwordRecoveryRepository;
+    private final ProfileValidator profileValidator;
 
     public ProfileGrpc.ResetPasswordResponse activate(ResetPasswordRequest resetPasswordRequest) {
         PasswordRecoveryEntity passwordRecoveryEntity = passwordRecoveryRepository
                 .findFirstByRecoveryTokenOrderByExpiresAtDesc(UUID.fromString(resetPasswordRequest.getRecoveryToken()))
                 .orElseThrow(() -> new BusinessException(ErrorCode.UNKNOWN_LINK));
 
-        ProfileEntity profile = profileRepository.findByEmail(passwordRecoveryEntity.getEmail()).orElseThrow(
-                () -> new BusinessException(ErrorCode.PROFILE_NOT_FOUND));
+        ProfileEntity profile = profileValidator.checkEmailExistence(passwordRecoveryEntity.getEmail());
 
         profile.setProfilePassword(BCrypt.hashpw(resetPasswordRequest.getNewPassword(), BCrypt.gensalt()));
         profileRepository.save(profile);

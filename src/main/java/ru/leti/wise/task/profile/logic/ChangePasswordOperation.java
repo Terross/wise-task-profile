@@ -10,20 +10,19 @@ import ru.leti.wise.task.profile.mapper.ProfileMapper;
 import ru.leti.wise.task.profile.repository.ProfileRepository;
 import ru.leti.wise.task.profile.ProfileGrpc;
 import ru.leti.wise.task.profile.ProfileGrpc.ChangePasswordRequest;
+import ru.leti.wise.task.profile.validation.ProfileValidator;
 
 import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
 public class ChangePasswordOperation {
-    private final ProfileMapper profileMapper;
     private final ProfileRepository profileRepository;
+    private final ProfileValidator profileValidator;
 
     public void activate(ChangePasswordRequest request) {
-        ProfileEntity profile = profileRepository.findById(UUID.fromString(request.getProfileId())).orElseThrow(
-                () -> new BusinessException(ErrorCode.PROFILE_NOT_FOUND));
-
-        if (!BCrypt.checkpw(request.getOldPassword(),profile.getProfilePassword())) {
+        ProfileEntity profile = profileValidator.checkForExistence(request.getProfileId());
+        if (!BCrypt.checkpw(request.getOldPassword(), profile.getProfilePassword())) {
             throw new BusinessException(ErrorCode.INVALID_PASSWORD);
         }
 
