@@ -18,7 +18,6 @@ public class PasswordRecoveryEntity {
     @Column(name = "email")
     String email;
 
-
     @Column(name = "expires_at")
     Timestamp expiresAt;
 }

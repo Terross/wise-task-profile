@@ -3,9 +3,8 @@ syntax = "proto3";
 package ru.leti.wise.task.profile;
 
 enum Role {
-  STUDENT = 0;
-  TEACHER = 1;
-  CAPTAIN = 2;
+  USER = 0;
+  AUTHOR = 1;
   ADMIN = 3;
 }
 
