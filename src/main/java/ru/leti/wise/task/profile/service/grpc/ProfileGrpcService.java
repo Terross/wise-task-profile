@@ -38,13 +38,13 @@ public class ProfileGrpcService extends ProfileServiceImplBase {
 
     @Override
     public void getProfile(GetProfileRequest request, StreamObserver<GetProfileResponse> responseObserver) {
-        responseObserver.onNext(getProfileOperation.activate(UUID.fromString(request.getProfileId())));
+        responseObserver.onNext(getProfileOperation.activate(request));
         responseObserver.onCompleted();
     }
 
     @Override
     public void deleteProfile(DeleteProfileRequest request, StreamObserver<Empty> responseObserver) {
-        deleteProfileOperation.activate(UUID.fromString(request.getProfileId()));
+        deleteProfileOperation.activate(request);
         responseObserver.onNext(Empty.newBuilder().build());
         responseObserver.onCompleted();
     }
@@ -107,6 +107,7 @@ public class ProfileGrpcService extends ProfileServiceImplBase {
 
     @GRpcServiceAdvice
     @RequiredArgsConstructor
+    @Slf4j
     static class ErrorHandler {
         private final GrpcErrorHandler grpcErrorHandler;
 

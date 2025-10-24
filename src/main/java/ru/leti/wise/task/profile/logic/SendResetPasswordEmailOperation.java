@@ -12,6 +12,7 @@ import ru.leti.wise.task.profile.model.ProfileEntity;
 import ru.leti.wise.task.profile.notification.MailSender;
 import ru.leti.wise.task.profile.repository.PasswordRecoveryRepository;
 import ru.leti.wise.task.profile.repository.ProfileRepository;
+import ru.leti.wise.task.profile.validation.ProfileValidator;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -24,6 +25,7 @@ public class SendResetPasswordEmailOperation {
 
     private final MailSender mailSender;
     private final ProfileRepository profileRepository;
+    private final ProfileValidator profileValidator;
     private final PasswordRecoveryRepository passwordRecoveryRepository;
 
 
@@ -43,8 +45,7 @@ public class SendResetPasswordEmailOperation {
 
 
     public void activate(SendResetPasswordEmailRequest request) {
-        ProfileEntity profile = profileRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new BusinessException(ErrorCode.PROFILE_NOT_FOUND));
+        ProfileEntity profile = profileValidator.checkEmailExistence(request.getEmail());
 
         passwordRecoveryRepository.deleteAllByEmail(profile.getEmail());
 

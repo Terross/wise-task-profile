@@ -9,6 +9,9 @@ import ru.leti.wise.task.profile.error.BusinessException;
 import ru.leti.wise.task.profile.error.ErrorCode;
 import ru.leti.wise.task.profile.mapper.ProfileMapper;
 import ru.leti.wise.task.profile.repository.ProfileRepository;
+import ru.leti.wise.task.profile.validation.ProfileValidator;
+
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -16,16 +19,17 @@ public class UpdateProfileOperation {
 
     private final ProfileMapper profileMapper;
     private final ProfileRepository profileRepository;
+    private final ProfileValidator profileValidator;
 
     public UpdateProfileResponse activate(Profile profile) {
-        var profileEntity = profileMapper.toProfileEntity(profile);
-        var oldProfile = profileRepository.findById(profileEntity.getId())
-                .orElseThrow(() -> new BusinessException(ErrorCode.PROFILE_NOT_FOUND));
-        profileEntity.setProfilePassword(oldProfile.getProfilePassword());
-        profileRepository.save(profileEntity);
+        profileValidator.checkEmptyFieldsForUpdate(profile);
+        profileValidator.checkUniqueEmail(profile);
+        var oldProfile = profileValidator.checkForExistence(profile.getId());
+        profileMapper.updateProfileEntity(oldProfile, profile);
+        profileRepository.save(oldProfile);
 
         return UpdateProfileResponse.newBuilder()
-                .setProfile(profileMapper.toProfile(profileEntity))
+                .setProfile(profileMapper.toProfile(oldProfile))
                 .build();
     }
 }
