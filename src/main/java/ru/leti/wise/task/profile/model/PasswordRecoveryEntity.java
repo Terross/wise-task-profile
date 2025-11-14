@@ -18,6 +18,9 @@ public class PasswordRecoveryEntity {
     @Column(name = "email")
     String email;
 
+    @Column(name = "created_at")
+    Timestamp createdAt;
+
     @Column(name = "expires_at")
     Timestamp expiresAt;
 }

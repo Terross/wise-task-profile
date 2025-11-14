@@ -1,64 +1,64 @@
 package ru.leti.wise.task.profile.logic;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 
-import ru.leti.wise.task.profile.error.BusinessException;
-import ru.leti.wise.task.profile.error.ErrorCode;
 import ru.leti.wise.task.profile.ProfileGrpc.SendResetPasswordEmailRequest;
 import ru.leti.wise.task.profile.model.PasswordRecoveryEntity;
 import ru.leti.wise.task.profile.model.ProfileEntity;
 import ru.leti.wise.task.profile.notification.MailSender;
+import ru.leti.wise.task.profile.notification.TemplateLoader;
 import ru.leti.wise.task.profile.repository.PasswordRecoveryRepository;
-import ru.leti.wise.task.profile.repository.ProfileRepository;
 import ru.leti.wise.task.profile.validation.ProfileValidator;
+import ru.leti.wise.task.profile.validation.RateLimitValidator;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
 public class SendResetPasswordEmailOperation {
-    private final String RECOVERY_LINK = "https://wisetask.ru/profile/reset_password?token=";
-
+;
+    private final TemplateLoader templateLoader;
     private final MailSender mailSender;
-    private final ProfileRepository profileRepository;
     private final ProfileValidator profileValidator;
+    private final RateLimitValidator rateLimitValidator;
     private final PasswordRecoveryRepository passwordRecoveryRepository;
 
+    @Value("${reset-password.email-subject}")
+    private String emailSubject;
+    @Value("${reset-password.recovery-link}")
+    private String RECOVERY_LINK;
+    @Value("${reset-password.template}")
+    private String template;
+    @Value("${reset-password.token-expires}")
+    Integer tokenExpiresMinutes;
 
-    private final String emailSubject = "Ваша ссылка для восстановления пароля";
+    private String createEmailHtml(String recoveryToken) {
+        String recoveryLink = RECOVERY_LINK + recoveryToken;
 
-    private String createEmailText(String recoveryToken) {
-        return "Тема: Восстановление доступа к вашему аккаунту\n\n" +
-               "Здравствуйте!\n\n" +
-               "Вы запросили сброс пароля для wise-task.\n\n" +
-               "Для установки нового пароля перейдите по ссылке:\n" +
-               RECOVERY_LINK + recoveryToken + "\n\n" +
-               "Ссылка будет активна в течение 10 минут.\n" +
-               "Если вы не запрашивали сброс пароля, проигнорируйте это письмо.\n\n" +
-               "С уважением,\n" +
-               "Команда wise-task";
+        Map<String, String> params = Map.of(
+                "RECOVERY_LINK", recoveryLink
+        );
+
+        return templateLoader.loadTemplateWithParams(template, params);
     }
 
 
     public void activate(SendResetPasswordEmailRequest request) {
         ProfileEntity profile = profileValidator.checkEmailExistence(request.getEmail());
-
-        passwordRecoveryRepository.deleteAllByEmail(profile.getEmail());
-
+        rateLimitValidator.checkRateLimit(request.getEmail());
         UUID recoveryToken = UUID.randomUUID();
-        LocalDateTime expiresAt = LocalDateTime.now().plusMinutes(10);
-
         PasswordRecoveryEntity passwordRecoveryEntity = new PasswordRecoveryEntity();
         passwordRecoveryEntity.setEmail(request.getEmail());
         passwordRecoveryEntity.setRecoveryToken(recoveryToken);
-        passwordRecoveryEntity.setExpiresAt(Timestamp.valueOf(expiresAt));
+        passwordRecoveryEntity.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        passwordRecoveryEntity.setExpiresAt(Timestamp.valueOf(LocalDateTime.now().plusMinutes(tokenExpiresMinutes)));
         passwordRecoveryRepository.save(passwordRecoveryEntity);
-
-
-        mailSender.sendEmail(profile.getEmail(), emailSubject, createEmailText(recoveryToken.toString()));
+        mailSender.sendEmail(profile.getEmail(), emailSubject, createEmailHtml(recoveryToken.toString()));
     }
 }
