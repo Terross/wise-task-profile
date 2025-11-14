@@ -1,4 +1,14 @@
 spring:
+  mail:
+    host: smtp.wisetask.ru
+    port: 25 # postfix
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+    from-address: noreply@wisetask.ru
   application:
     name: wise-task-profile
   datasource:
@@ -12,6 +22,13 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+reset-password:
+  recovery-link: "https://wisetask.ru/profile/reset_password?token="
+  token-expires: 10
+  send-limit: 2
+  template: reset-password.html
+  email-subject: "Ваша ссылка для восстановления пароля"
 
 grpc:
   port: 6567
