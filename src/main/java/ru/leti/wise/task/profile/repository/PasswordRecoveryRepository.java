@@ -4,6 +4,7 @@ import io.micrometer.observation.annotation.Observed;
 import org.springframework.data.repository.CrudRepository;
 import ru.leti.wise.task.profile.model.PasswordRecoveryEntity;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,4 +16,5 @@ public interface PasswordRecoveryRepository extends CrudRepository<PasswordRecov
     Optional<PasswordRecoveryEntity> findFirstByRecoveryTokenOrderByExpiresAtDesc(UUID recoveryToken);
     void deleteAllByEmail(String email);
 
+    Optional<PasswordRecoveryEntity> findFirstByEmailOrderByCreatedAtDesc(String email);
 }
