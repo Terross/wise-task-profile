@@ -5,7 +5,7 @@ package ru.leti.wise.task.profile;
 enum Role {
   USER = 0;
   AUTHOR = 1;
-  ADMIN = 3;
+  ADMIN = 2;
 }
 
 message Profile {
@@ -16,7 +16,6 @@ message Profile {
   string last_name = 5;
   string patronymic = 6;
   Role profile_role = 7;
-  string student_group = 8;
 }
 
 message ProfileStatistic {
