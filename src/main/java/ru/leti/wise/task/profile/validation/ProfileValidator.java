@@ -17,12 +17,12 @@ public class ProfileValidator {
     private final ProfileRepository profileRepository;
     public void checkEmptyFields(Profile profile){
         if(profile.getEmail().isBlank() || profile.getProfilePassword().isBlank()
-                || profile.getFirstName().isBlank() || profile.getLastName().isBlank() || profile.getStudentGroup().isBlank()){
+                || profile.getFirstName().isBlank() || profile.getLastName().isBlank()){
             throw new BusinessException(ErrorCode.EMPTY_FIELDS);
         }
     }
     public void checkEmptyFieldsForUpdate(Profile profile){
-        if(profile.getFirstName().isBlank() || profile.getEmail().isBlank() ||profile.getLastName().isBlank() || profile.getStudentGroup().isBlank()){
+        if(profile.getFirstName().isBlank() || profile.getEmail().isBlank() ||profile.getLastName().isBlank()){
             throw new BusinessException(ErrorCode.EMPTY_FIELDS);
         }
     }

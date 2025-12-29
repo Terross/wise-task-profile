@@ -5,10 +5,9 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 import ru.leti.wise.task.profile.ProfileGrpc.SignUpRequest;
 import ru.leti.wise.task.profile.ProfileGrpc.SignUpResponse;
-import ru.leti.wise.task.profile.error.BusinessException;
-import ru.leti.wise.task.profile.error.ErrorCode;
 import ru.leti.wise.task.profile.mapper.ProfileMapper;
 import ru.leti.wise.task.profile.model.ProfileEntity;
+import ru.leti.wise.task.profile.model.Role;
 import ru.leti.wise.task.profile.repository.ProfileRepository;
 import ru.leti.wise.task.profile.validation.ProfileValidator;
 
@@ -30,6 +29,7 @@ public class SignUpOperation {
 
         ProfileEntity profile = profileMapper.toProfileEntity(signUpRequest.getProfile());
         profile.setId(UUID.randomUUID());
+        profile.setProfileRole(Role.USER);
         profile.setProfilePassword(BCrypt.hashpw(profile.getProfilePassword(), BCrypt.gensalt()));
         profileRepository.save(profile);
         return SignUpResponse.newBuilder()
