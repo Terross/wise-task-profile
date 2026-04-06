@@ -12,9 +12,9 @@ spring:
   application:
     name: wise-task-profile
   datasource:
-    url: jdbc:postgresql://localhost:5432/wise_task_profile
-    username: wise_task_profile
-    password: wise_task_profile
+    url: jdbc:postgresql://localhost:5432/${PROFILE_DB}
+    username: ${PROFILE_DB_USER}
+    password: ${PROFILE_DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     generate-ddl: false
@@ -31,18 +31,16 @@ reset-password:
   email-subject: "Ваша ссылка для восстановления пароля"
 
 grpc:
-  port: 6567
+  port: ${PROFILE_GRPC_PORT}
 server:
-  port: 8082
+  port: ${PROFILE_PORT}
 
 logging:
   pattern:
     level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
   level:
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-    org.hibernate.orm.jdbc.bind: TRACE
-    org.hibernate.type.descriptor.sql: TRACE
+    org.hibernate: ${LOGGING_LEVEL}
+    ru.leti.wise.task.profile: ${LOGGING_LEVEL}
 
 management:
   tracing:
@@ -62,4 +60,4 @@ management:
             requests: true
   zipkin:
     tracing:
-      endpoint: http://${TEMPO_HOST:localhost}:${TEMPO_PORT:9411}/api/v2/spans
+      endpoint: http://localhost:9411/api/v2/spans
