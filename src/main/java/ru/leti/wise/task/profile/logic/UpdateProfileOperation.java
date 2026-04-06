@@ -23,7 +23,6 @@ public class UpdateProfileOperation {
 
     public UpdateProfileResponse activate(Profile profile) {
         profileValidator.checkEmptyFieldsForUpdate(profile);
-        profileValidator.checkUniqueEmail(profile);
         var oldProfile = profileValidator.checkForExistence(profile.getId());
         profileMapper.updateProfileEntity(oldProfile, profile);
         profileRepository.save(oldProfile);
