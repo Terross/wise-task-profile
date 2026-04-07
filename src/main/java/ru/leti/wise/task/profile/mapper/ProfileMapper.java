@@ -23,7 +23,6 @@ public interface ProfileMapper {
             defaultExpression = "java(mapStringToUuid(profile.getId()))")
     List<Profile> toProfiles(List<ProfileEntity> profiles);
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "profileRole", ignore = true)
     @Mapping(target = "profilePassword", ignore = true)
     void updateProfileEntity(@MappingTarget ProfileEntity target, Profile source);
 

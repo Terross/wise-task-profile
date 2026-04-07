@@ -28,9 +28,6 @@ public class ProfileEntity {
 
     private String patronymic;
 
-    @Column(name = "student_group")
-    private String studentGroup;
-
     @Enumerated(STRING)
     @Column(name = "profile_role")
     private Role profileRole;
