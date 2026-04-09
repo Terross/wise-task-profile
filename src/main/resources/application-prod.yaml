@@ -8,7 +8,7 @@ spring:
           auth: false
           starttls:
             enable: false
-    from-address: noreply@wisetask.ru
+    from-address: ${SMTP_RELAYHOST_USERNAME}
   application:
     name: wise-task-profile
   datasource:
