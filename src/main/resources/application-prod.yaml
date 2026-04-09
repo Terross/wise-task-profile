@@ -1,7 +1,7 @@
 spring:
   mail:
-    host: smtp.wisetask.ru
-    port: 25 # postfix
+    host: ${SMTP_HOST}
+    port: ${SMTP_PORT} # postfix
     properties:
       mail:
         smtp:
