@@ -30,6 +30,10 @@ reset-password:
   template: reset-password.html
   email-subject: "Ваша ссылка для восстановления пароля"
 
+welcome:
+  template: welcome.html
+
+
 grpc:
   port: ${PROFILE_GRPC_PORT}
 server:

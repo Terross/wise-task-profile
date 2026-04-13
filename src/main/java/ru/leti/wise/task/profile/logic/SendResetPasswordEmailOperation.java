@@ -22,7 +22,7 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 public class SendResetPasswordEmailOperation {
-;
+
     private final TemplateLoader templateLoader;
     private final MailSender mailSender;
     private final ProfileValidator profileValidator;

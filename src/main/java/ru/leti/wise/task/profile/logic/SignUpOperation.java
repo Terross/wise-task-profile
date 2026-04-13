@@ -1,6 +1,7 @@
 package ru.leti.wise.task.profile.logic;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 import ru.leti.wise.task.profile.ProfileGrpc.SignUpRequest;
@@ -8,6 +9,8 @@ import ru.leti.wise.task.profile.ProfileGrpc.SignUpResponse;
 import ru.leti.wise.task.profile.mapper.ProfileMapper;
 import ru.leti.wise.task.profile.model.ProfileEntity;
 import ru.leti.wise.task.profile.model.Role;
+import ru.leti.wise.task.profile.notification.MailSender;
+import ru.leti.wise.task.profile.notification.TemplateLoader;
 import ru.leti.wise.task.profile.repository.ProfileRepository;
 import ru.leti.wise.task.profile.validation.ProfileValidator;
 
@@ -21,6 +24,10 @@ public class SignUpOperation {
     private final ProfileMapper profileMapper;
     private final ProfileRepository profileRepository;
     private final ProfileValidator profileValidator;
+    private final MailSender mailSender;
+    private final TemplateLoader templateLoader;
+    @Value("${welcome.template}")
+    private String template;
 
     public SignUpResponse activate(SignUpRequest signUpRequest) {
         var profileDto = signUpRequest.getProfile();
@@ -32,6 +39,8 @@ public class SignUpOperation {
         profile.setProfileRole(Role.USER);
         profile.setProfilePassword(BCrypt.hashpw(profile.getProfilePassword(), BCrypt.gensalt()));
         profileRepository.save(profile);
+        String welcomeHtml = templateLoader.loadTemplate(template);
+        mailSender.sendEmail(profile.getEmail(), "Добро пожаловать на WiseTask", welcomeHtml);
         return SignUpResponse.newBuilder()
                 .setProfile(profileMapper.toProfile(profile))
                 .build();
