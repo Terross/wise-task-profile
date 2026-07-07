@@ -2,14 +2,14 @@ package ru.leti.wise.task.profile.service.grpc;
 
 import com.google.protobuf.Empty;
 import io.grpc.Status;
+import io.grpc.StatusException;
 import io.grpc.stub.StreamObserver;
 import io.micrometer.observation.annotation.Observed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.lognet.springboot.grpc.GRpcService;
-import org.lognet.springboot.grpc.recovery.GRpcExceptionHandler;
-import org.lognet.springboot.grpc.recovery.GRpcExceptionScope;
-import org.lognet.springboot.grpc.recovery.GRpcServiceAdvice;
+import org.springframework.grpc.server.advice.GrpcAdvice;
+import org.springframework.grpc.server.advice.GrpcExceptionHandler;
+import org.springframework.grpc.server.service.GrpcService;
 import ru.leti.wise.task.profile.ProfileGrpc.*;
 import ru.leti.wise.task.profile.ProfileServiceGrpc.ProfileServiceImplBase;
 import ru.leti.wise.task.profile.error.BusinessException;
@@ -17,11 +17,9 @@ import ru.leti.wise.task.profile.error.GrpcErrorHandler;
 import ru.leti.wise.task.profile.helper.LogInterceptor;
 import ru.leti.wise.task.profile.logic.*;
 
-import java.util.UUID;
-
 @Slf4j
 @Observed
-@GRpcService(interceptors = {LogInterceptor.class})
+@GrpcService(interceptors = {LogInterceptor.class})
 @RequiredArgsConstructor
 public class ProfileGrpcService extends ProfileServiceImplBase {
 
@@ -105,15 +103,16 @@ public class ProfileGrpcService extends ProfileServiceImplBase {
     }
 
 
-    @GRpcServiceAdvice
+    @GrpcAdvice
     @RequiredArgsConstructor
     @Slf4j
     static class ErrorHandler {
         private final GrpcErrorHandler grpcErrorHandler;
 
-        @GRpcExceptionHandler
-        public Status handleBusinessException(BusinessException e, GRpcExceptionScope scope) {
-            return grpcErrorHandler.processError(e);
+        @GrpcExceptionHandler
+        public StatusException handleBusinessException(BusinessException e) {
+            Status status = grpcErrorHandler.processError(e);
+            return status.asException();
         }
     }
 }
