@@ -14,7 +14,7 @@ import ru.leti.wise.task.profile.ProfileGrpc.*;
 import ru.leti.wise.task.profile.ProfileServiceGrpc.ProfileServiceImplBase;
 import ru.leti.wise.task.profile.error.BusinessException;
 import ru.leti.wise.task.profile.error.GrpcErrorHandler;
-import ru.leti.wise.task.profile.helper.LogInterceptor;
+import ru.leti.wise.task.profile.interceptors.LogInterceptor;
 import ru.leti.wise.task.profile.logic.*;
 
 @Slf4j
@@ -106,7 +106,7 @@ public class ProfileGrpcService extends ProfileServiceImplBase {
     @GrpcAdvice
     @RequiredArgsConstructor
     @Slf4j
-    static class ErrorHandler {
+    public static class ErrorHandler {
         private final GrpcErrorHandler grpcErrorHandler;
 
         @GrpcExceptionHandler

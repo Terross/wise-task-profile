@@ -1,4 +1,8 @@
 spring:
+  grpc:
+    server:
+      port: 6567
+
   mail:
     host: localhost
     port: 1025 # mailHog
@@ -12,9 +16,9 @@ spring:
   application:
     name: wise-task-profile
   datasource:
-    url: jdbc:postgresql://localhost:5432/${PROFILE_DB}
-    username: ${PROFILE_DB_USER}
-    password: ${PROFILE_DB_PASSWORD}
+    url: jdbc:postgresql://localhost:5432/wise_task_profile
+    username: wise_task_profile
+    password: wise_task_profile
     driver-class-name: org.postgresql.Driver
   jpa:
     generate-ddl: false
@@ -33,23 +37,19 @@ reset-password:
 welcome:
   template: welcome.html
 
-
-grpc:
-  port: ${PROFILE_GRPC_PORT}
 server:
-  port: ${PROFILE_PORT}
+  port: 8082
 
 logging:
   pattern:
-    level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
+    level: '[${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
   level:
-    org.hibernate: ${LOGGING_LEVEL}
-    ru.leti.wise.task.profile: ${LOGGING_LEVEL}
+    root: INFO
 
 management:
   tracing:
     sampling:
-      probability: 1
+      probability: 1.0
   endpoints:
     web:
       exposure:
