@@ -9,7 +9,6 @@ import ru.leti.wise.task.profile.error.BusinessException;
 import ru.leti.wise.task.profile.error.ErrorCode;
 import ru.leti.wise.task.profile.mapper.ProfileMapper;
 import ru.leti.wise.task.profile.model.ProfileEntity;
-import ru.leti.wise.task.profile.repository.ProfileRepository;
 import ru.leti.wise.task.profile.validation.ProfileValidator;
 
 @Component
