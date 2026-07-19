@@ -53,7 +53,8 @@ management:
     tracing:
       export:
         otlp:
-          endpoint: http://${TEMPO_HOST:localhost}:${TEMPO_PORT:4317}/api/v2/spans
+          endpoint: http://${TEMPO_HOST:localhost}:${TEMPO_PORT:9411}/api/v2/spans
+
   endpoints:
     web:
       exposure:
