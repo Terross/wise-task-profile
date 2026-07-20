@@ -16,4 +16,12 @@ COPY ./src ./src
 RUN --mount=type=cache,target=/home/gradle/.gradle/caches \
     ./gradlew clean build -x test --no-daemon
 
-ENTRYPOINT ["java","-jar","/app/build/libs/wise-task-profile-1.0.0.jar"]
+# reduces memory usage
+FROM eclipse-temurin:21-jre-alpine
+WORKDIR /app
+COPY --from=build /app/build/libs/*.jar app.jar
+
+RUN addgroup -S wise-task && adduser -S wise-task-profile -G wise-task # security
+USER wise-task-profile
+
+ENTRYPOINT ["java","-jar","app.jar"]

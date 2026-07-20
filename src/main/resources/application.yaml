@@ -1,11 +1,14 @@
 spring:
+  threads:
+    virtual:
+      enabled: true
   grpc:
     server:
       port: ${PROFILE_GRPC_PORT:6567}
 
   mail:
     host: ${SMTP_HOST:localhost}
-    port: ${SMTP_PORT:25} # mailHog
+    port: ${SMTP_PORT:1025} # mailHog
     properties:
       mail:
         smtp:
@@ -52,7 +55,7 @@ management:
     tracing:
       export:
         otlp:
-          endpoint: http://${TEMPO_HOST:localhost}:${TEMPO_PORT:9411}/api/v2/spans
+          endpoint: http://${TEMPO_HOST:localhost}:${TEMPO_PORT:4318}/v1/traces
   otlp:
     metrics:
       export:
