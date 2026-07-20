@@ -5,7 +5,7 @@ spring:
 
   mail:
     host: ${SMTP_HOST:localhost}
-    port: ${SMTP_PORT:1025} # mailHog
+    port: ${SMTP_PORT:25} # mailHog
     properties:
       mail:
         smtp:
@@ -46,7 +46,6 @@ logging:
 
 management:
   tracing:
-    enabled: true
     sampling:
       probability: 1.0
   opentelemetry:
@@ -54,7 +53,10 @@ management:
       export:
         otlp:
           endpoint: http://${TEMPO_HOST:localhost}:${TEMPO_PORT:9411}/api/v2/spans
-
+  otlp:
+    metrics:
+      export:
+        enabled: false # prometheus will do it
   endpoints:
     web:
       exposure:
