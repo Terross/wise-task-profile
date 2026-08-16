@@ -9,12 +9,11 @@ import ru.leti.wise.task.profile.ProfileGrpc.SignUpResponse;
 import ru.leti.wise.task.profile.mapper.ProfileMapper;
 import ru.leti.wise.task.profile.model.ProfileEntity;
 import ru.leti.wise.task.profile.model.Role;
-import ru.leti.wise.task.profile.notification.MailSender;
+import ru.leti.wise.task.profile.notification.EmailSender;
 import ru.leti.wise.task.profile.notification.TemplateLoader;
 import ru.leti.wise.task.profile.repository.ProfileRepository;
 import ru.leti.wise.task.profile.validation.ProfileValidator;
 
-import java.nio.file.attribute.UserPrincipal;
 import java.util.UUID;
 
 @Component
@@ -24,7 +23,7 @@ public class SignUpOperation {
     private final ProfileMapper profileMapper;
     private final ProfileRepository profileRepository;
     private final ProfileValidator profileValidator;
-    private final MailSender mailSender;
+    private final EmailSender emailSender;
     private final TemplateLoader templateLoader;
     @Value("${welcome.template}")
     private String template;
@@ -40,7 +39,7 @@ public class SignUpOperation {
         profile.setProfilePassword(BCrypt.hashpw(profile.getProfilePassword(), BCrypt.gensalt()));
         profileRepository.save(profile);
         String welcomeHtml = templateLoader.loadTemplate(template);
-        mailSender.sendEmail(profile.getEmail(), "Добро пожаловать на WiseTask", welcomeHtml);
+        emailSender.sendEmail(profile.getEmail(), "Добро пожаловать на WiseTask", welcomeHtml);
         return SignUpResponse.newBuilder()
                 .setProfile(profileMapper.toProfile(profile))
                 .build();

@@ -1,6 +1,12 @@
-package ru.leti.wise.task.profile.helper;
+package ru.leti.wise.task.profile.interceptors;
 
-import io.grpc.*;
+import io.grpc.ForwardingServerCallListener;
+import io.grpc.Metadata;
+import io.grpc.MethodDescriptor;
+import io.grpc.ServerCall;
+import io.grpc.ServerCallHandler;
+import io.grpc.ServerInterceptor;
+import io.grpc.Status;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

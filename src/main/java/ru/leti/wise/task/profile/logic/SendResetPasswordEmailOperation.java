@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import ru.leti.wise.task.profile.ProfileGrpc.SendResetPasswordEmailRequest;
 import ru.leti.wise.task.profile.model.PasswordRecoveryEntity;
 import ru.leti.wise.task.profile.model.ProfileEntity;
-import ru.leti.wise.task.profile.notification.MailSender;
+import ru.leti.wise.task.profile.notification.EmailSender;
 import ru.leti.wise.task.profile.notification.TemplateLoader;
 import ru.leti.wise.task.profile.repository.PasswordRecoveryRepository;
 import ru.leti.wise.task.profile.validation.ProfileValidator;
@@ -24,7 +24,7 @@ import java.util.UUID;
 public class SendResetPasswordEmailOperation {
 
     private final TemplateLoader templateLoader;
-    private final MailSender mailSender;
+    private final EmailSender emailSender;
     private final ProfileValidator profileValidator;
     private final RateLimitValidator rateLimitValidator;
     private final PasswordRecoveryRepository passwordRecoveryRepository;
@@ -59,6 +59,6 @@ public class SendResetPasswordEmailOperation {
         passwordRecoveryEntity.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         passwordRecoveryEntity.setExpiresAt(Timestamp.valueOf(LocalDateTime.now().plusMinutes(tokenExpiresMinutes)));
         passwordRecoveryRepository.save(passwordRecoveryEntity);
-        mailSender.sendEmail(profile.getEmail(), emailSubject, createEmailHtml(recoveryToken.toString()));
+        emailSender.sendEmail(profile.getEmail(), emailSubject, createEmailHtml(recoveryToken.toString()));
     }
 }

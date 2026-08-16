@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Properties;
 
 @Component
-public class MailSender {
+public class EmailSender {
 
     @Value("${spring.mail.host}")
     private String smtpHost;
