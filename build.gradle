@@ -9,7 +9,7 @@ group = 'ru.leti'
 version = '1.0.0'
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(25)
     }
 }
 
@@ -57,7 +57,7 @@ dependencies {
     // Internal
     implementation 'com.github.wisetask:wise-task-library:1.0.8'
 
-    // Config processor
+    // Config processor for IDE
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
     // Test

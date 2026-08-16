@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21-jdk AS build
+FROM eclipse-temurin:25-jdk AS build
 WORKDIR /app
 COPY gradlew .
 COPY gradle ./gradle
@@ -17,7 +17,7 @@ RUN --mount=type=cache,target=/home/gradle/.gradle/caches \
     ./gradlew clean build -x test --no-daemon
 
 # reduces memory usage
-FROM eclipse-temurin:21-jre-alpine
+FROM eclipse-temurin:25-jre-alpine
 WORKDIR /app
 COPY --from=build /app/build/libs/*.jar app.jar
 
