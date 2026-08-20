@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Properties;
 
 @Component
+// TODO async send
 public class EmailSender {
 
     @Value("${spring.mail.host}")

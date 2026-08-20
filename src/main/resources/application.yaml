@@ -8,7 +8,7 @@ spring:
 
   mail:
     host: ${SMTP_HOST:localhost}
-    port: ${SMTP_PORT:1025} # mailHog
+    port: ${SMTP_PORT:25} # mailHog
     properties:
       mail:
         smtp:
