@@ -19,7 +19,6 @@ public class GrpcErrorHandler {
             case EMAIL_ALREADY_TAKEN -> Status.ALREADY_EXISTS.withDescription(message);
             case UNKNOWN_LINK, EMPTY_FIELDS -> Status.INVALID_ARGUMENT.withDescription(message);
             case MANY_REQUESTS -> Status.RESOURCE_EXHAUSTED.withDescription(message);
-            default -> Status.UNKNOWN;
         };
     }
 }
